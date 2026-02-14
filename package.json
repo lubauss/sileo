@@ -1,7 +1,12 @@
 {
 	"name": "sileo",
 	"version": "0.0.1",
-	"private": true,
+	"description": "A lightweight toast notification library for React",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hiaaryan/sileo.git"
+	},
 	"main": "./index.ts",
 	"types": "./index.ts",
 	"sideEffects": [
