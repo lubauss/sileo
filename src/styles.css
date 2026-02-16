@@ -37,7 +37,7 @@
 		1
 	);
 
-	--sileo-duration: 600ms;
+	--sileo-duration: 550ms;
 	--sileo-height: 40px;
 	--sileo-width: 350px;
 
@@ -137,40 +137,6 @@
 
 /* --------------------------------- Shapes --------------------------------- */
 
-[data-sileo-pill],
-[data-sileo-body] {
-	transform-box: fill-box;
-	transform-origin: 50% 0%;
-}
-
-[data-sileo-pill] {
-	transform: scaleY(var(--_sy, 1));
-	width: var(--_pw);
-	height: var(--_ph);
-}
-
-[data-sileo-body] {
-	transform: scaleY(var(--_by, 0));
-	opacity: var(--_by, 0);
-}
-
-[data-sileo-toast][data-ready="true"] [data-sileo-pill] {
-	transition:
-		transform var(--sileo-duration) var(--sileo-spring-easing),
-		width var(--sileo-duration) var(--sileo-spring-easing),
-		x var(--sileo-duration) var(--sileo-spring-easing);
-}
-
-[data-sileo-toast][data-ready="true"][data-expanded="true"] [data-sileo-pill] {
-	transition-delay: calc(var(--sileo-duration) * 0.08);
-}
-
-[data-sileo-toast][data-ready="true"] [data-sileo-body] {
-	transition:
-		transform var(--sileo-duration) var(--sileo-spring-easing),
-		opacity var(--sileo-duration) var(--sileo-spring-easing);
-}
-
 /* --------------------------------- Header --------------------------------- */
 
 [data-sileo-header] {
@@ -216,6 +182,10 @@
 	white-space: nowrap;
 	opacity: 1;
 	filter: blur(0px);
+}
+
+[data-sileo-header-inner][data-layer="current"],
+[data-sileo-header-inner][data-exiting="true"] {
 	will-change: opacity, filter;
 }
 
@@ -305,8 +275,8 @@
 }
 
 [data-sileo-toast][data-ready="true"] [data-sileo-content] {
-	transition: opacity calc(var(--sileo-duration) * 0.08)
-		var(--sileo-spring-easing) calc(var(--sileo-duration) * 0.04);
+	transition: opacity calc(var(--sileo-duration) * 0.08) ease
+		calc(var(--sileo-duration) * 0.04);
 }
 
 [data-sileo-content][data-edge="top"] {
@@ -323,7 +293,7 @@
 
 [data-sileo-toast][data-ready="true"]
 	[data-sileo-content][data-visible="true"] {
-	transition: opacity var(--sileo-duration) var(--sileo-spring-easing)
+	transition: opacity calc(var(--sileo-duration) * 0.5) ease
 		calc(var(--sileo-duration) * 0.25);
 }
 

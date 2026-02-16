@@ -13,6 +13,7 @@ import {
 } from "react";
 import type { SileoButton, SileoState, SileoStyles } from "./types";
 import "./styles.css";
+import { motion } from "motion/react";
 import {
 	ArrowRight,
 	Check,
@@ -31,7 +32,9 @@ const BLUR_RATIO = 0.5;
 const PILL_PADDING = 10;
 const MIN_EXPAND_RATIO = 2.25;
 const SWAP_COLLAPSE_MS = 200;
-const HEADER_EXIT_MS = 150;
+const HEADER_EXIT_MS = 300;
+
+const SPRING = { type: "spring" as const, bounce: 0.25, duration: 0.55 };
 
 type State = SileoState;
 
@@ -377,6 +380,34 @@ export const Sileo = memo(function Sileo({
 				? (WIDTH - resolvedPillWidth) / 2
 				: 0;
 
+	/* ------------------------------- Memoised animate targets ----------------- */
+
+	const pillAnimate = useMemo(
+		() => ({
+			x: pillX,
+			width: resolvedPillWidth,
+			height: open ? pillHeight : HEIGHT,
+		}),
+		[pillX, resolvedPillWidth, open, pillHeight],
+	);
+
+	const bodyAnimate = useMemo(
+		() => ({
+			height: open ? expandedContent : 0,
+			opacity: open ? 1 : 0,
+		}),
+		[open, expandedContent],
+	);
+
+	const pillTransition = ready ? SPRING : { duration: 0 };
+
+	const viewBox = `0 0 ${WIDTH} ${svgHeight}`;
+
+	const canvasStyle = useMemo<CSSProperties>(
+		() => ({ filter: `url(#${filterId})` }),
+		[filterId],
+	);
+
 	/* ------------------------------- Inline styles ---------------------------- */
 
 	const rootStyle = useMemo<CSSProperties & Record<string, string>>(
@@ -384,13 +415,10 @@ export const Sileo = memo(function Sileo({
 			"--_h": `${open ? expanded : HEIGHT}px`,
 			"--_pw": `${resolvedPillWidth}px`,
 			"--_px": `${pillX}px`,
-			"--_sy": `${open ? 1 : HEIGHT / pillHeight}`,
-			"--_ph": `${pillHeight}px`,
-			"--_by": `${open ? 1 : 0}`,
 			"--_ht": `translateY(${open ? (expand === "bottom" ? 3 : -3) : 0}px) scale(${open ? 0.9 : 1})`,
 			"--_co": `${open ? 1 : 0}`,
 		}),
-		[open, expanded, resolvedPillWidth, pillX, expand, pillHeight],
+		[open, expanded, resolvedPillWidth, pillX, expand],
 	);
 
 	/* -------------------------------- Handlers -------------------------------- */
@@ -469,6 +497,15 @@ export const Sileo = memo(function Sileo({
 		};
 	}, []);
 
+	const handleButtonClick = useCallback(
+		(e: React.MouseEvent) => {
+			e.preventDefault();
+			e.stopPropagation();
+			view.button?.onClick();
+		},
+		[view.button],
+	);
+
 	const handlePointerDown = useCallback(
 		(e: React.PointerEvent<HTMLButtonElement>) => {
 			if (exiting || !onDismiss) return;
@@ -500,33 +537,30 @@ export const Sileo = memo(function Sileo({
 			onTransitionEnd={handleTransitionEnd}
 			onPointerDown={handlePointerDown}
 		>
-			<div data-sileo-canvas data-edge={expand}>
-				<svg
-					data-sileo-svg
-					width={WIDTH}
-					height={svgHeight}
-					viewBox={`0 0 ${WIDTH} ${svgHeight}`}
-				>
+			<div data-sileo-canvas data-edge={expand} style={canvasStyle}>
+				<svg data-sileo-svg width={WIDTH} height={svgHeight} viewBox={viewBox}>
 					<title>Sileo Notification</title>
 					<GooeyDefs filterId={filterId} blur={blur} />
-					<g filter={`url(#${filterId})`}>
-						<rect
-							data-sileo-pill
-							x={pillX}
-							rx={resolvedRoundness}
-							ry={resolvedRoundness}
-							fill={view.fill}
-						/>
-						<rect
-							data-sileo-body
-							y={HEIGHT}
-							width={WIDTH}
-							height={expandedContent}
-							rx={resolvedRoundness}
-							ry={resolvedRoundness}
-							fill={view.fill}
-						/>
-					</g>
+					<motion.rect
+						data-sileo-pill
+						rx={resolvedRoundness}
+						ry={resolvedRoundness}
+						fill={view.fill}
+						initial={false}
+						animate={pillAnimate}
+						transition={pillTransition}
+					/>
+					<motion.rect
+						data-sileo-body
+						y={HEIGHT}
+						width={WIDTH}
+						rx={resolvedRoundness}
+						ry={resolvedRoundness}
+						fill={view.fill}
+						initial={false}
+						animate={bodyAnimate}
+						transition={SPRING}
+					/>
 				</svg>
 			</div>
 
@@ -597,11 +631,7 @@ export const Sileo = memo(function Sileo({
 								data-sileo-button
 								data-state={view.state}
 								className={view.styles?.button}
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									view.button?.onClick();
-								}}
+								onClick={handleButtonClick}
 							>
 								{view.button.title}
 							</a>

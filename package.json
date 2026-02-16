@@ -36,5 +36,8 @@
 	},
 	"devDependencies": {
 		"bunchee": "^6.9.4"
+	},
+	"dependencies": {
+		"motion": "^12.34.0"
 	}
 }
