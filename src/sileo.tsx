@@ -399,6 +399,8 @@ export const Sileo = memo(function Sileo({
 		[open, expandedContent],
 	);
 
+	const bodyTransition = open ? SPRING : { ...SPRING, bounce: 0 };
+
 	const pillTransition = ready ? SPRING : { duration: 0 };
 
 	const viewBox = `0 0 ${WIDTH} ${svgHeight}`;
@@ -559,7 +561,7 @@ export const Sileo = memo(function Sileo({
 						fill={view.fill}
 						initial={false}
 						animate={bodyAnimate}
-						transition={SPRING}
+						transition={bodyTransition}
 					/>
 				</svg>
 			</div>
