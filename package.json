@@ -24,11 +24,13 @@
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"files": [
-		"dist"
+		"dist",
+		"src"
 	],
 	"scripts": {
 		"build": "rm -rf dist && bunchee && cp src/styles.css dist/styles.css",
-		"dev": "bunchee --watch"
+		"dev": "bunchee --watch",
+		"prepare": "npm run build"
 	},
 	"peerDependencies": {
 		"react": ">=18",
