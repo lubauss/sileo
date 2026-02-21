@@ -256,6 +256,10 @@ export function Toaster({
 
 	const hoverRef = useRef(false);
 	const timersRef = useRef(new Map<string, number>());
+	// Track when each timer was started and its scheduled duration so we can
+	// pause on hover and resume with the remaining time instead of resetting.
+	const timerMetaRef = useRef(new Map<string, { startedAt: number; duration: number }>());
+	const remainingRef = useRef(new Map<string, number>());
 	const listRef = useRef(toasts);
 	const latestRef = useRef<string | undefined>(undefined);
 	const handlersCache = useRef(
@@ -278,24 +282,49 @@ export function Toaster({
 	const clearAllTimers = useCallback(() => {
 		for (const t of timersRef.current.values()) clearTimeout(t);
 		timersRef.current.clear();
+		timerMetaRef.current.clear();
+	}, []);
+
+	const scheduleItem = useCallback((item: SileoItem, overrideDur?: number) => {
+		const key = timeoutKey(item);
+		if (timersRef.current.has(key)) return;
+
+		const dur = overrideDur ?? remainingRef.current.get(key) ?? (item.duration ?? DEFAULT_TOAST_DURATION);
+		if (dur === null || dur <= 0) return;
+
+		// Clean up any stale remaining entry
+		remainingRef.current.delete(key);
+
+		timerMetaRef.current.set(key, { startedAt: Date.now(), duration: dur });
+		timersRef.current.set(
+			key,
+			window.setTimeout(() => {
+				timerMetaRef.current.delete(key);
+				remainingRef.current.delete(key);
+				dismissToast(item.id);
+			}, dur),
+		);
 	}, []);
 
 	const schedule = useCallback((items: SileoItem[]) => {
 		if (hoverRef.current) return;
-
 		for (const item of items) {
 			if (item.exiting) continue;
-			const key = timeoutKey(item);
-			if (timersRef.current.has(key)) continue;
-
-			const dur = item.duration ?? DEFAULT_TOAST_DURATION;
-			if (dur === null || dur <= 0) continue;
-
-			timersRef.current.set(
-				key,
-				window.setTimeout(() => dismissToast(item.id), dur),
-			);
+			scheduleItem(item);
 		}
+	}, [scheduleItem]);
+
+	// Pause all timers: snapshot remaining time per key, then clear.
+	const pauseAllTimers = useCallback(() => {
+		const now = Date.now();
+		for (const [key, meta] of timerMetaRef.current) {
+			const elapsed = now - meta.startedAt;
+			const left = Math.max(0, meta.duration - elapsed);
+			remainingRef.current.set(key, left);
+		}
+		for (const t of timersRef.current.values()) clearTimeout(t);
+		timersRef.current.clear();
+		timerMetaRef.current.clear();
 	}, []);
 
 	useEffect(() => {
@@ -316,7 +345,13 @@ export function Toaster({
 			if (!toastKeys.has(key)) {
 				clearTimeout(timer);
 				timersRef.current.delete(key);
+				timerMetaRef.current.delete(key);
+				remainingRef.current.delete(key);
 			}
+		}
+		// Also clean up remaining entries for removed toasts
+		for (const key of remainingRef.current.keys()) {
+			if (!toastKeys.has(key)) remainingRef.current.delete(key);
 		}
 		for (const id of handlersCache.current.keys()) {
 			if (!toastIds.has(id)) handlersCache.current.delete(id);
@@ -335,8 +370,8 @@ export function Toaster({
 	>(() => {
 		if (hoverRef.current) return;
 		hoverRef.current = true;
-		clearAllTimers();
-	}, [clearAllTimers]);
+		pauseAllTimers();
+	}, [pauseAllTimers]);
 
 	handleMouseLeaveRef.current = useCallback<
 		MouseEventHandler<HTMLButtonElement>

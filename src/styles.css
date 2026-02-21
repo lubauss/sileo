@@ -348,6 +348,7 @@
 	font-size: 0.75rem;
 	font-weight: 500;
 	cursor: pointer;
+	user-select: none;
 	color: var(--sileo-btn-color, currentColor);
 	background-color: var(--sileo-btn-bg, transparent);
 	transition: background-color 150ms ease;

@@ -496,6 +496,7 @@ export const Sileo = memo(function Sileo({
 	const SWIPE_MAX = 20;
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const pointerStartRef = useRef<number | null>(null);
+	const swipeActiveRef = useRef(false);
 	const onDismissRef = useRef(onDismiss);
 	onDismissRef.current = onDismiss;
 
@@ -519,6 +520,7 @@ export const Sileo = memo(function Sileo({
 				if (pointerStartRef.current === null || !el) return;
 				const dy = e.clientY - pointerStartRef.current;
 				pointerStartRef.current = null;
+				swipeActiveRef.current = false;
 				el.style.transform = "";
 				el.removeEventListener("pointermove", handlers.onMove);
 				el.removeEventListener("pointerup", handlers.onUp);
@@ -529,6 +531,18 @@ export const Sileo = memo(function Sileo({
 		};
 		swipeHandlersRef.current = handlers;
 	}
+
+	// Clean up swipe listeners on unmount (prevents leak if unmounted mid-gesture)
+	useEffect(() => {
+		return () => {
+			const el = buttonRef.current;
+			const h = swipeHandlersRef.current;
+			if (el && h) {
+				el.removeEventListener("pointermove", h.onMove);
+				el.removeEventListener("pointerup", h.onUp);
+			}
+		};
+	}, []);
 
 	const handleButtonClick = useCallback(
 		(e: React.MouseEvent) => {
@@ -542,9 +556,11 @@ export const Sileo = memo(function Sileo({
 	const handlePointerDown = useCallback(
 		(e: React.PointerEvent<HTMLButtonElement>) => {
 			if (exiting || !onDismiss) return;
+			if (swipeActiveRef.current) return;
 			const target = e.target as HTMLElement;
 			if (target.closest("[data-sileo-button]")) return;
 			pointerStartRef.current = e.clientY;
+			swipeActiveRef.current = true;
 			e.currentTarget.setPointerCapture(e.pointerId);
 			const el = buttonRef.current;
 			const h = swipeHandlersRef.current;
@@ -686,17 +702,22 @@ export const Sileo = memo(function Sileo({
 					>
 						{view.description}
 						{view.button && (
-							// biome-ignore lint/a11y/useValidAnchor: cannot use button inside a button
-							<a
-								href="#"
-								type="button"
+							<span
+								role="button"
+								tabIndex={0}
 								data-sileo-button
 								data-state={view.state}
 								className={view.styles?.button}
 								onClick={handleButtonClick}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" || e.key === " ") {
+										e.preventDefault();
+										handleButtonClick(e as unknown as React.MouseEvent);
+									}
+								}}
 							>
 								{view.button.title}
-							</a>
+							</span>
 						)}
 					</div>
 				</div>
