@@ -47,6 +47,8 @@ export interface SileoToasterProps {
 	position?: SileoPosition;
 	offset?: SileoOffsetValue | SileoOffsetConfig;
 	options?: Partial<SileoOptions>;
+	theme?: 'light' | 'dark' | 'system';
+	closeButton?: boolean;
 }
 
 /* ------------------------------ Global State ------------------------------ */
@@ -131,7 +133,7 @@ const createToast = (options: InternalSileoOptions) => {
 	const live = store.toasts.filter((t) => !t.exiting);
 	const merged = mergeOptions(options);
 
-	const id = merged.id ?? "sileo-default";
+	const id = merged.id ?? generateId();
 	const prev = live.find((t) => t.id === id);
 	const item = buildSileoItem(merged, id, prev?.position);
 
@@ -213,12 +215,42 @@ export const sileo = {
 
 /* ------------------------------ Toaster Component ------------------------- */
 
+const THEME_FILLS = {
+	light: '#FFFFFF',
+	dark: '#1a1a1a',
+} as const;
+
+function useResolvedTheme(theme: 'light' | 'dark' | 'system' | undefined): 'light' | 'dark' {
+	const [resolved, setResolved] = useState<'light' | 'dark'>(() => {
+		if (theme === 'light' || theme === 'dark') return theme;
+		if (typeof window === 'undefined') return 'light';
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	});
+
+	useEffect(() => {
+		if (theme === 'light' || theme === 'dark') {
+			setResolved(theme);
+			return;
+		}
+		const mq = window.matchMedia('(prefers-color-scheme: dark)');
+		const handler = (e: MediaQueryListEvent) => setResolved(e.matches ? 'dark' : 'light');
+		setResolved(mq.matches ? 'dark' : 'light');
+		mq.addEventListener('change', handler);
+		return () => mq.removeEventListener('change', handler);
+	}, [theme]);
+
+	return resolved;
+}
+
 export function Toaster({
 	children,
 	position = "top-right",
 	offset,
 	options,
+	theme,
+	closeButton = false,
 }: SileoToasterProps) {
+	const resolvedTheme = useResolvedTheme(theme);
 	const [toasts, setToasts] = useState<SileoItem[]>(store.toasts);
 	const [activeId, setActiveId] = useState<string>();
 
@@ -239,8 +271,9 @@ export function Toaster({
 
 	useEffect(() => {
 		store.position = position;
-		store.options = options;
-	}, [position, options]);
+		const fill = theme ? THEME_FILLS[resolvedTheme] : undefined;
+		store.options = fill ? { ...options, fill } : options;
+	}, [position, options, theme, resolvedTheme]);
 
 	const clearAllTimers = useCallback(() => {
 		for (const t of timersRef.current.values()) clearTimeout(t);
@@ -396,6 +429,7 @@ export function Toaster({
 						key={pos}
 						data-sileo-viewport
 						data-position={pos}
+						data-theme={theme ? resolvedTheme : undefined}
 						aria-live="polite"
 						style={getViewportStyle(pos)}
 					>
@@ -423,6 +457,7 @@ export function Toaster({
 									onMouseEnter={h.enter}
 									onMouseLeave={h.leave}
 									onDismiss={h.dismiss}
+									closeButton={closeButton}
 								/>
 							);
 						})}
