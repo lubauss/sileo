@@ -1087,13 +1087,14 @@ function mapOptions(msg, opts) {
         id: opts == null ? void 0 : opts.id
     };
 }
-const toast = {
+const _toast = (msg, opts)=>sileo.show(mapOptions(msg, opts));
+const toast = Object.assign(_toast, {
     success: (msg, opts)=>sileo.success(mapOptions(msg, opts)),
     error: (msg, opts)=>sileo.error(mapOptions(msg, opts)),
     warning: (msg, opts)=>sileo.warning(mapOptions(msg, opts)),
     info: (msg, opts)=>sileo.info(mapOptions(msg, opts)),
     dismiss: sileo.dismiss,
     promise: sileo.promise
-};
+});
 
 export { Toaster, sileo, toast };

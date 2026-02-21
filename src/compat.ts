@@ -31,7 +31,20 @@ function mapOptions(
 	};
 }
 
-export const toast = {
+type ToastFn = {
+	(msg: string | ReactNode, opts?: SonnerCompatOptions): string;
+	success: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
+	error: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
+	warning: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
+	info: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
+	dismiss: typeof sileo.dismiss;
+	promise: typeof sileo.promise;
+};
+
+const _toast = (msg: string | ReactNode, opts?: SonnerCompatOptions) =>
+	sileo.show(mapOptions(msg, opts));
+
+export const toast: ToastFn = Object.assign(_toast, {
 	success: (msg: string | ReactNode, opts?: SonnerCompatOptions) =>
 		sileo.success(mapOptions(msg, opts)),
 	error: (msg: string | ReactNode, opts?: SonnerCompatOptions) =>
@@ -42,4 +55,4 @@ export const toast = {
 		sileo.info(mapOptions(msg, opts)),
 	dismiss: sileo.dismiss,
 	promise: sileo.promise,
-};
+});

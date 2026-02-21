@@ -68,14 +68,16 @@ interface SonnerCompatOptions {
     };
     id?: string;
 }
-declare const toast: {
+type ToastFn = {
+    (msg: string | ReactNode, opts?: SonnerCompatOptions): string;
     success: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
     error: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
     warning: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
     info: (msg: string | ReactNode, opts?: SonnerCompatOptions) => string;
-    dismiss: (id: string) => void;
-    promise: <T>(promise: Promise<T> | (() => Promise<T>), opts: SileoPromiseOptions<T>) => Promise<T>;
+    dismiss: typeof sileo.dismiss;
+    promise: typeof sileo.promise;
 };
+declare const toast: ToastFn;
 
 export { Toaster, sileo, toast };
 export type { SileoButton, SileoOptions, SileoPosition, SileoState, SileoStyles, SileoToasterProps };
