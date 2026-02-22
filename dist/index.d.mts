@@ -38,6 +38,7 @@ interface SileoToasterProps {
     options?: Partial<SileoOptions>;
     theme?: 'light' | 'dark' | 'system';
     closeButton?: boolean;
+    toastLimit?: number;
 }
 interface SileoPromiseOptions<T = unknown> {
     loading: Pick<SileoOptions, "title" | "icon">;
@@ -57,7 +58,7 @@ declare const sileo: {
     dismiss: (id: string) => void;
     clear: (position?: SileoPosition) => void;
 };
-declare function Toaster({ children, position, offset, options, theme, closeButton, }: SileoToasterProps): any;
+declare function Toaster({ children, position, offset, options, theme, closeButton, toastLimit, }: SileoToasterProps): any;
 
 interface SonnerCompatOptions {
     description?: ReactNode | string;

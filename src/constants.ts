@@ -27,3 +27,7 @@ export const PILL_PADDING = 10;
 export const MIN_EXPAND_RATIO = 2.25;
 export const SWAP_COLLAPSE_MS = 200;
 export const HEADER_EXIT_MS = DURATION_MS * 0.7;
+
+/* ---------------------------------- Limits -------------------------------- */
+
+export const DEFAULT_TOAST_LIMIT = 5;

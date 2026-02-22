@@ -66,8 +66,9 @@ interface SileoProps {
 	interruptKey?: string;
 	refreshKey?: string;
 	closeButton?: boolean;
-	onMouseEnter?: MouseEventHandler<HTMLButtonElement>;
-	onMouseLeave?: MouseEventHandler<HTMLButtonElement>;
+	visible?: boolean;
+	onMouseEnter?: MouseEventHandler<HTMLLIElement>;
+	onMouseLeave?: MouseEventHandler<HTMLLIElement>;
 	onDismiss?: () => void;
 }
 
@@ -135,6 +136,7 @@ export const Sileo = memo(function Sileo({
 	interruptKey,
 	refreshKey,
 	closeButton = false,
+	visible = true,
 	onMouseEnter,
 	onMouseLeave,
 	onDismiss,
@@ -455,7 +457,7 @@ export const Sileo = memo(function Sileo({
 
 	/* -------------------------------- Handlers -------------------------------- */
 
-	const handleEnter: MouseEventHandler<HTMLButtonElement> = useCallback(
+	const handleEnter: MouseEventHandler<HTMLLIElement> = useCallback(
 		(e) => {
 			onMouseEnter?.(e);
 			if (hasDesc) setIsExpanded(true);
@@ -463,7 +465,7 @@ export const Sileo = memo(function Sileo({
 		[hasDesc, onMouseEnter],
 	);
 
-	const handleLeave: MouseEventHandler<HTMLButtonElement> = useCallback(
+	const handleLeave: MouseEventHandler<HTMLLIElement> = useCallback(
 		(e) => {
 			onMouseLeave?.(e);
 			setIsExpanded(false);
@@ -471,7 +473,7 @@ export const Sileo = memo(function Sileo({
 		[onMouseLeave],
 	);
 
-	const handleTransitionEnd: TransitionEventHandler<HTMLButtonElement> =
+	const handleTransitionEnd: TransitionEventHandler<HTMLLIElement> =
 		useCallback(
 			(e) => {
 				if (e.propertyName !== "height" && e.propertyName !== "transform")
@@ -494,7 +496,7 @@ export const Sileo = memo(function Sileo({
 
 	const SWIPE_DISMISS = 30;
 	const SWIPE_MAX = 20;
-	const buttonRef = useRef<HTMLButtonElement>(null);
+	const buttonRef = useRef<HTMLLIElement>(null);
 	const pointerStartRef = useRef<number | null>(null);
 	const swipeActiveRef = useRef(false);
 	const onDismissRef = useRef(onDismiss);
@@ -554,7 +556,7 @@ export const Sileo = memo(function Sileo({
 	);
 
 	const handlePointerDown = useCallback(
-		(e: React.PointerEvent<HTMLButtonElement>) => {
+		(e: React.PointerEvent<HTMLLIElement>) => {
 			if (exiting || !onDismiss) return;
 			if (swipeActiveRef.current) return;
 			const target = e.target as HTMLElement;
@@ -575,9 +577,9 @@ export const Sileo = memo(function Sileo({
 	/* --------------------------------- Render --------------------------------- */
 
 	return (
-		<button
+		<li
 			ref={buttonRef}
-			type="button"
+			tabIndex={0}
 			data-sileo-toast
 			data-ready={ready}
 			data-expanded={open}
@@ -585,6 +587,7 @@ export const Sileo = memo(function Sileo({
 			data-edge={expand}
 			data-position={position}
 			data-state={view.state}
+			data-visible={visible}
 			className={className}
 			style={rootStyle}
 			onMouseEnter={handleEnter}
@@ -671,26 +674,18 @@ export const Sileo = memo(function Sileo({
 			</div>
 
 			{closeButton && onDismiss && (
-				<div
+				<button
+					type="button"
 					data-sileo-close
-					role="button"
-					tabIndex={0}
 					aria-label="Close notification"
 					onClick={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
 						onDismiss();
 					}}
-					onKeyDown={(e) => {
-						if (e.key === 'Enter' || e.key === ' ') {
-							e.preventDefault();
-							e.stopPropagation();
-							onDismiss();
-						}
-					}}
 				>
 					<X />
-				</div>
+				</button>
 			)}
 
 			{hasDesc && (
@@ -702,26 +697,19 @@ export const Sileo = memo(function Sileo({
 					>
 						{view.description}
 						{view.button && (
-							<span
-								role="button"
-								tabIndex={0}
+							<button
+								type="button"
 								data-sileo-button
 								data-state={view.state}
 								className={view.styles?.button}
 								onClick={handleButtonClick}
-								onKeyDown={(e) => {
-									if (e.key === "Enter" || e.key === " ") {
-										e.preventDefault();
-										handleButtonClick(e as unknown as React.MouseEvent);
-									}
-								}}
 							>
 								{view.button.title}
-							</span>
+							</button>
 						)}
 					</div>
 				</div>
 			)}
-		</button>
+		</li>
 	);
 });

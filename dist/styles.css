@@ -56,9 +56,7 @@
 	cursor: pointer;
 	pointer-events: auto;
 	touch-action: none;
-	border: 0;
-	background: transparent;
-	padding: 0;
+	list-style: none;
 	width: var(--sileo-width);
 	height: var(--_h, var(--sileo-height));
 	opacity: 0;
@@ -108,6 +106,23 @@
 [data-sileo-viewport][data-position^="bottom"]
 	[data-sileo-toast][data-ready="true"][data-exiting="true"] {
 	transform: translateY(6px) scale(0.95);
+}
+
+/* ---------------------------------- List ---------------------------------- */
+
+[data-sileo-list] {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: contents;
+}
+
+/* -------------------------------- Visibility ------------------------------ */
+
+[data-sileo-toast][data-visible="false"] {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
 }
 
 /* ------------------------------- SVG Canvas ------------------------------- */
@@ -345,6 +360,8 @@
 	margin-top: 0.75rem;
 	border-radius: 9999px;
 	border: 0;
+	background: transparent;
+	font: inherit;
 	font-size: 0.75rem;
 	font-weight: 500;
 	cursor: pointer;
@@ -492,6 +509,7 @@
 	padding: 0;
 	border: 0;
 	background: transparent;
+	font: inherit;
 	cursor: pointer;
 	pointer-events: auto;
 	color: rgba(0, 0, 0, 0.4);

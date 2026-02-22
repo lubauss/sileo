@@ -12,6 +12,7 @@ import {
 	AUTO_COLLAPSE_DELAY,
 	AUTO_EXPAND_DELAY,
 	DEFAULT_TOAST_DURATION,
+	DEFAULT_TOAST_LIMIT,
 	EXIT_DURATION,
 } from "./constants";
 import { Sileo } from "./sileo";
@@ -49,6 +50,7 @@ export interface SileoToasterProps {
 	options?: Partial<SileoOptions>;
 	theme?: 'light' | 'dark' | 'system';
 	closeButton?: boolean;
+	toastLimit?: number;
 }
 
 /* ------------------------------ Global State ------------------------------ */
@@ -60,6 +62,7 @@ const store = {
 	listeners: new Set<SileoListener>(),
 	position: "top-right" as SileoPosition,
 	options: undefined as Partial<SileoOptions> | undefined,
+	toastLimit: DEFAULT_TOAST_LIMIT,
 
 	emit() {
 		for (const fn of this.listeners) fn(this.toasts);
@@ -142,6 +145,17 @@ const createToast = (options: InternalSileoOptions) => {
 	} else {
 		store.update((p) => [...p.filter((t) => t.id !== id), item]);
 	}
+
+	// Store-level hard cap: auto-dismiss oldest when exceeding 3× toastLimit
+	const hardCap = store.toastLimit * 3;
+	const liveAfter = store.toasts.filter((t) => !t.exiting);
+	if (liveAfter.length > hardCap) {
+		const excess = liveAfter.slice(0, liveAfter.length - hardCap);
+		for (const t of excess) {
+			dismissToast(t.id);
+		}
+	}
+
 	return { id, duration: merged.duration ?? DEFAULT_TOAST_DURATION };
 };
 
@@ -249,6 +263,7 @@ export function Toaster({
 	options,
 	theme,
 	closeButton = false,
+	toastLimit = DEFAULT_TOAST_LIMIT,
 }: SileoToasterProps) {
 	const resolvedTheme = useResolvedTheme(theme);
 	const [toasts, setToasts] = useState<SileoItem[]>(store.toasts);
@@ -266,8 +281,8 @@ export function Toaster({
 		new Map<
 			string,
 			{
-				enter: MouseEventHandler<HTMLButtonElement>;
-				leave: MouseEventHandler<HTMLButtonElement>;
+				enter: MouseEventHandler<HTMLLIElement>;
+				leave: MouseEventHandler<HTMLLIElement>;
 				dismiss: () => void;
 			}
 		>(),
@@ -275,9 +290,10 @@ export function Toaster({
 
 	useEffect(() => {
 		store.position = position;
+		store.toastLimit = toastLimit;
 		const fill = theme ? THEME_FILLS[resolvedTheme] : undefined;
 		store.options = fill ? { ...options, fill } : options;
-	}, [position, options, theme, resolvedTheme]);
+	}, [position, options, theme, resolvedTheme, toastLimit]);
 
 	const clearAllTimers = useCallback(() => {
 		for (const t of timersRef.current.values()) clearTimeout(t);
@@ -361,12 +377,12 @@ export function Toaster({
 	}, [toasts, schedule]);
 
 	const handleMouseEnterRef =
-		useRef<MouseEventHandler<HTMLButtonElement>>(null);
+		useRef<MouseEventHandler<HTMLLIElement>>(null);
 	const handleMouseLeaveRef =
-		useRef<MouseEventHandler<HTMLButtonElement>>(null);
+		useRef<MouseEventHandler<HTMLLIElement>>(null);
 
 	handleMouseEnterRef.current = useCallback<
-		MouseEventHandler<HTMLButtonElement>
+		MouseEventHandler<HTMLLIElement>
 	>(() => {
 		if (hoverRef.current) return;
 		hoverRef.current = true;
@@ -374,7 +390,7 @@ export function Toaster({
 	}, [pauseAllTimers]);
 
 	handleMouseLeaveRef.current = useCallback<
-		MouseEventHandler<HTMLButtonElement>
+		MouseEventHandler<HTMLLIElement>
 	>(() => {
 		if (!hoverRef.current) return;
 		hoverRef.current = false;
@@ -401,13 +417,13 @@ export function Toaster({
 			enter: ((e) => {
 				setActiveId((prev) => (prev === toastId ? prev : toastId));
 				handleMouseEnterRef.current?.(e);
-			}) as MouseEventHandler<HTMLButtonElement>,
+			}) as MouseEventHandler<HTMLLIElement>,
 			leave: ((e) => {
 				setActiveId((prev) =>
 					prev === latestRef.current ? prev : latestRef.current,
 				);
 				handleMouseLeaveRef.current?.(e);
-			}) as MouseEventHandler<HTMLButtonElement>,
+			}) as MouseEventHandler<HTMLLIElement>,
 			dismiss: () => dismissToast(toastId),
 		};
 
@@ -459,6 +475,18 @@ export function Toaster({
 				const pill = pillAlign(pos);
 				const expand = expandDir(pos);
 
+				// Visibility split: only the first toastLimit non-exiting toasts are visible
+				let visibleCount = 0;
+				const visibilityMap = new Map<string, boolean>();
+				for (const item of items) {
+					if (item.exiting) {
+						visibilityMap.set(item.id, true);
+					} else {
+						visibleCount++;
+						visibilityMap.set(item.id, visibleCount <= toastLimit);
+					}
+				}
+
 				return (
 					<section
 						key={pos}
@@ -468,34 +496,38 @@ export function Toaster({
 						aria-live="polite"
 						style={getViewportStyle(pos)}
 					>
-						{items.map((item) => {
-							const h = getHandlers(item.id);
-							return (
-								<Sileo
-									key={item.id}
-									id={item.id}
-									state={item.state}
-									title={item.title}
-									description={item.description}
-									position={pill}
-									expand={expand}
-									icon={item.icon}
-									fill={item.fill}
-									styles={item.styles}
-									button={item.button}
-									roundness={item.roundness}
-									exiting={item.exiting}
-									autoExpandDelayMs={item.autoExpandDelayMs}
-									autoCollapseDelayMs={item.autoCollapseDelayMs}
-									refreshKey={item.instanceId}
-									canExpand={activeId === undefined || activeId === item.id}
-									onMouseEnter={h.enter}
-									onMouseLeave={h.leave}
-									onDismiss={h.dismiss}
-									closeButton={closeButton}
-								/>
-							);
-						})}
+						<ol data-sileo-list>
+							{items.map((item) => {
+								const h = getHandlers(item.id);
+								const visible = visibilityMap.get(item.id) ?? true;
+								return (
+									<Sileo
+										key={item.id}
+										id={item.id}
+										state={item.state}
+										title={item.title}
+										description={item.description}
+										position={pill}
+										expand={expand}
+										icon={item.icon}
+										fill={item.fill}
+										styles={item.styles}
+										button={item.button}
+										roundness={item.roundness}
+										exiting={item.exiting}
+										autoExpandDelayMs={item.autoExpandDelayMs}
+										autoCollapseDelayMs={item.autoCollapseDelayMs}
+										refreshKey={item.instanceId}
+										canExpand={activeId === undefined || activeId === item.id}
+										onMouseEnter={h.enter}
+										onMouseLeave={h.leave}
+										onDismiss={h.dismiss}
+										closeButton={closeButton}
+										visible={visible}
+									/>
+								);
+							})}
+						</ol>
 					</section>
 				);
 			})}

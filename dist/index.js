@@ -15,7 +15,7 @@ var jsxRuntime = require('react/jsx-runtime');
 var react = require('react');
 var react$1 = require('motion/react');
 
-__insertCSS(":root{--sileo-spring-easing:linear(\n\t\t0,\n\t\t0.002 0.6%,\n\t\t0.007 1.2%,\n\t\t0.015 1.8%,\n\t\t0.026 2.4%,\n\t\t0.041 3.1%,\n\t\t0.06 3.8%,\n\t\t0.108 5.3%,\n\t\t0.157 6.6%,\n\t\t0.214 8%,\n\t\t0.467 13.7%,\n\t\t0.577 16.3%,\n\t\t0.631 17.7%,\n\t\t0.682 19.1%,\n\t\t0.73 20.5%,\n\t\t0.771 21.8%,\n\t\t0.808 23.1%,\n\t\t0.844 24.5%,\n\t\t0.874 25.8%,\n\t\t0.903 27.2%,\n\t\t0.928 28.6%,\n\t\t0.952 30.1%,\n\t\t0.972 31.6%,\n\t\t0.988 33.1%,\n\t\t1.01 35.7%,\n\t\t1.025 38.5%,\n\t\t1.034 41.6%,\n\t\t1.038 45%,\n\t\t1.035 50.1%,\n\t\t1.012 64.2%,\n\t\t1.003 73%,\n\t\t0.999 83.7%,\n\t\t1\n\t);--sileo-duration:600ms;--sileo-height:40px;--sileo-width:350px;--sileo-state-success:oklch(0.723 0.219 142.136);--sileo-state-loading:oklch(0.556 0 0);--sileo-state-error:oklch(0.637 0.237 25.331);--sileo-state-warning:oklch(0.795 0.184 86.047);--sileo-state-info:oklch(0.685 0.169 237.323);--sileo-state-action:oklch(0.623 0.214 259.815)}[data-sileo-toast]{position:relative;cursor:pointer;pointer-events:auto;touch-action:none;border:0;background:0 0;padding:0;width:var(--sileo-width);height:var(--_h,var(--sileo-height));opacity:0;transform:translateZ(0) scale(.95);transform-origin:center;contain:layout style;overflow:visible}[data-sileo-toast][data-state=loading]{cursor:default}[data-sileo-toast][data-ready=true]{opacity:1;transform:translateZ(0) scale(1);transition:transform calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),opacity calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),margin-bottom calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),margin-top calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),height var(--sileo-duration) var(--sileo-spring-easing)}[data-sileo-viewport][data-position^=top] [data-sileo-toast]:not([data-ready=true]){transform:translateY(-6px) scale(.95)}[data-sileo-viewport][data-position^=bottom] [data-sileo-toast]:not([data-ready=true]){transform:translateY(6px) scale(.95)}[data-sileo-toast][data-ready=true][data-exiting=true]{opacity:0;pointer-events:none}[data-sileo-viewport][data-position^=top] [data-sileo-toast][data-ready=true][data-exiting=true]{transform:translateY(-6px) scale(.95)}[data-sileo-viewport][data-position^=bottom] [data-sileo-toast][data-ready=true][data-exiting=true]{transform:translateY(6px) scale(.95)}[data-sileo-canvas]{position:absolute;left:0;right:0;pointer-events:none;transform:translateZ(0);contain:layout style;overflow:visible}[data-sileo-canvas][data-edge=top]{bottom:0;transform:scaleY(-1) translateZ(0)}[data-sileo-canvas][data-edge=bottom]{top:0}[data-sileo-svg]{overflow:visible}[data-sileo-header]{position:absolute;z-index:20;display:flex;align-items:center;padding:.5rem;height:var(--sileo-height);overflow:hidden;left:var(--_px,0);transform:var(--_ht);max-width:var(--_pw)}[data-sileo-toast][data-ready=true] [data-sileo-header]{transition:transform var(--sileo-duration) var(--sileo-spring-easing),left var(--sileo-duration) var(--sileo-spring-easing),max-width var(--sileo-duration) var(--sileo-spring-easing)}[data-sileo-header][data-edge=top]{bottom:0}[data-sileo-header][data-edge=bottom]{top:0}[data-sileo-header-stack]{position:relative;display:inline-flex;align-items:center;height:100%}[data-sileo-header-inner]{display:flex;align-items:center;gap:.5rem;white-space:nowrap;opacity:1;filter:blur(0px);transform:translateZ(0)}[data-sileo-header-inner][data-layer=current]{position:relative;z-index:1;animation:sileo-header-enter var(--sileo-duration) var(--sileo-spring-easing) both}[data-sileo-header-inner][data-exiting=true],[data-sileo-header-inner][data-layer=current]:not(:only-child){will-change:opacity,filter}[data-sileo-header-inner][data-layer=prev]{position:absolute;left:0;top:0;z-index:0;pointer-events:none}[data-sileo-header-inner][data-exiting=true]{animation:sileo-header-exit calc(var(--sileo-duration) * .7) ease forwards}[data-sileo-badge]{display:flex;height:24px;width:24px;flex-shrink:0;align-items:center;justify-content:center;padding:2px;box-sizing:border-box;border-radius:9999px;color:var(--sileo-tone,currentColor);background-color:var(--sileo-tone-bg,transparent)}[data-sileo-title]{font-size:.825rem;line-height:1rem;font-weight:500;text-transform:capitalize;color:var(--sileo-tone,currentColor)}:is([data-sileo-badge],[data-sileo-title],[data-sileo-button])[data-state]{--_c:var(--sileo-state-success)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=loading]{--_c:var(--sileo-state-loading)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=error]{--_c:var(--sileo-state-error)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=warning]{--_c:var(--sileo-state-warning)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=info]{--_c:var(--sileo-state-info)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=action]{--_c:var(--sileo-state-action)}:is([data-sileo-badge],[data-sileo-title])[data-state]{--sileo-tone:var(--_c);--sileo-tone-bg:color-mix(in oklch, var(--_c) 20%, transparent)}[data-sileo-content]{position:absolute;left:0;z-index:10;width:100%;pointer-events:none;opacity:var(--_co, 0)}[data-sileo-content]:not([data-visible=true]){content-visibility:hidden}[data-sileo-toast][data-ready=true] [data-sileo-content]{transition:opacity calc(var(--sileo-duration) * .08) ease calc(var(--sileo-duration) * .04)}[data-sileo-content][data-edge=top]{top:0}[data-sileo-content][data-edge=bottom]{top:var(--sileo-height)}[data-sileo-content][data-visible=true]{pointer-events:auto}[data-sileo-toast][data-ready=true] [data-sileo-content][data-visible=true]{transition:opacity calc(var(--sileo-duration) * .6) ease calc(var(--sileo-duration) * .3)}[data-sileo-description]{width:100%;text-align:left;padding:1rem;font-size:.875rem;line-height:1.25rem;contain:layout style paint;content-visibility:auto}[data-sileo-button]{display:flex;align-items:center;justify-content:center;height:1.75rem;padding:0 .625rem;margin-top:.75rem;border-radius:9999px;border:0;font-size:.75rem;font-weight:500;cursor:pointer;user-select:none;color:var(--sileo-btn-color,currentColor);background-color:var(--sileo-btn-bg,transparent);transition:background-color 150ms ease}[data-sileo-button]:hover{background-color:var(--sileo-btn-bg-hover,transparent)}[data-sileo-button][data-state]{--sileo-btn-color:var(--_c);--sileo-btn-bg:color-mix(in oklch, var(--_c) 15%, transparent);--sileo-btn-bg-hover:color-mix(in oklch, var(--_c) 25%, transparent)}[data-sileo-icon=spin]{animation:sileo-spin 1s linear infinite}@keyframes sileo-spin{to{transform:rotate(360deg)}}@keyframes sileo-header-enter{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:blur(0px)}}@keyframes sileo-header-exit{from{opacity:1;filter:blur(0px)}to{opacity:0;filter:blur(6px)}}[data-sileo-viewport]{position:fixed;z-index:50;display:flex;gap:.75rem;padding:.75rem;pointer-events:none;max-width:calc(100vw - 1.5rem);contain:layout style}[data-sileo-viewport][data-position^=top] [data-sileo-toast]:not([data-ready=true]){margin-bottom:calc(-1 * (var(--sileo-height) + .75rem))}[data-sileo-viewport][data-position^=bottom] [data-sileo-toast]:not([data-ready=true]){margin-top:calc(-1 * (var(--sileo-height) + .75rem))}[data-sileo-viewport][data-position^=top]{top:0;flex-direction:column-reverse}[data-sileo-viewport][data-position^=bottom]{bottom:0;flex-direction:column}[data-sileo-viewport][data-position$=left]{left:0;align-items:flex-start}[data-sileo-viewport][data-position$=right]{right:0;align-items:flex-end}[data-sileo-viewport][data-position$=center]{left:50%;transform:translateX(-50%);align-items:center}@media (prefers-reduced-motion:no-preference){[data-sileo-toast][data-ready=true]:hover,[data-sileo-toast][data-ready=true][data-exiting=true]{will-change:transform,opacity,height}}@media (prefers-reduced-motion:reduce){[data-sileo-viewport],[data-sileo-viewport] *,[data-sileo-viewport] ::after,[data-sileo-viewport] ::before{animation-duration:0s;animation-iteration-count:1;transition-duration:0s}}[data-sileo-viewport][data-theme=dark] [data-sileo-description]{color:rgba(255,255,255,.8)}[data-sileo-viewport][data-theme=light] [data-sileo-description]{color:rgba(0,0,0,.7)}[data-sileo-close]{position:absolute;top:0;right:0;z-index:30;display:flex;align-items:center;justify-content:center;width:var(--sileo-height);height:var(--sileo-height);padding:0;border:0;background:0 0;cursor:pointer;pointer-events:auto;color:rgba(0,0,0,.4);opacity:0;transition:opacity 150ms ease}[data-sileo-viewport][data-theme=dark] [data-sileo-close]{color:rgba(255,255,255,.4)}[data-sileo-toast]:hover [data-sileo-close]{opacity:1}[data-sileo-close]:hover{color:rgba(0,0,0,.7)}[data-sileo-viewport][data-theme=dark] [data-sileo-close]:hover{color:rgba(255,255,255,.7)}");
+__insertCSS(":root{--sileo-spring-easing:linear(\n\t\t0,\n\t\t0.002 0.6%,\n\t\t0.007 1.2%,\n\t\t0.015 1.8%,\n\t\t0.026 2.4%,\n\t\t0.041 3.1%,\n\t\t0.06 3.8%,\n\t\t0.108 5.3%,\n\t\t0.157 6.6%,\n\t\t0.214 8%,\n\t\t0.467 13.7%,\n\t\t0.577 16.3%,\n\t\t0.631 17.7%,\n\t\t0.682 19.1%,\n\t\t0.73 20.5%,\n\t\t0.771 21.8%,\n\t\t0.808 23.1%,\n\t\t0.844 24.5%,\n\t\t0.874 25.8%,\n\t\t0.903 27.2%,\n\t\t0.928 28.6%,\n\t\t0.952 30.1%,\n\t\t0.972 31.6%,\n\t\t0.988 33.1%,\n\t\t1.01 35.7%,\n\t\t1.025 38.5%,\n\t\t1.034 41.6%,\n\t\t1.038 45%,\n\t\t1.035 50.1%,\n\t\t1.012 64.2%,\n\t\t1.003 73%,\n\t\t0.999 83.7%,\n\t\t1\n\t);--sileo-duration:600ms;--sileo-height:40px;--sileo-width:350px;--sileo-state-success:oklch(0.723 0.219 142.136);--sileo-state-loading:oklch(0.556 0 0);--sileo-state-error:oklch(0.637 0.237 25.331);--sileo-state-warning:oklch(0.795 0.184 86.047);--sileo-state-info:oklch(0.685 0.169 237.323);--sileo-state-action:oklch(0.623 0.214 259.815)}[data-sileo-toast]{position:relative;cursor:pointer;pointer-events:auto;touch-action:none;list-style:none;width:var(--sileo-width);height:var(--_h,var(--sileo-height));opacity:0;transform:translateZ(0) scale(.95);transform-origin:center;contain:layout style;overflow:visible}[data-sileo-toast][data-state=loading]{cursor:default}[data-sileo-toast][data-ready=true]{opacity:1;transform:translateZ(0) scale(1);transition:transform calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),opacity calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),margin-bottom calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),margin-top calc(var(--sileo-duration) * .66) var(--sileo-spring-easing),height var(--sileo-duration) var(--sileo-spring-easing)}[data-sileo-viewport][data-position^=top] [data-sileo-toast]:not([data-ready=true]){transform:translateY(-6px) scale(.95)}[data-sileo-viewport][data-position^=bottom] [data-sileo-toast]:not([data-ready=true]){transform:translateY(6px) scale(.95)}[data-sileo-toast][data-ready=true][data-exiting=true]{opacity:0;pointer-events:none}[data-sileo-viewport][data-position^=top] [data-sileo-toast][data-ready=true][data-exiting=true]{transform:translateY(-6px) scale(.95)}[data-sileo-viewport][data-position^=bottom] [data-sileo-toast][data-ready=true][data-exiting=true]{transform:translateY(6px) scale(.95)}[data-sileo-list]{list-style:none;margin:0;padding:0;display:contents}[data-sileo-toast][data-visible=false]{opacity:0;pointer-events:none;position:absolute}[data-sileo-canvas]{position:absolute;left:0;right:0;pointer-events:none;transform:translateZ(0);contain:layout style;overflow:visible}[data-sileo-canvas][data-edge=top]{bottom:0;transform:scaleY(-1) translateZ(0)}[data-sileo-canvas][data-edge=bottom]{top:0}[data-sileo-svg]{overflow:visible}[data-sileo-header]{position:absolute;z-index:20;display:flex;align-items:center;padding:.5rem;height:var(--sileo-height);overflow:hidden;left:var(--_px,0);transform:var(--_ht);max-width:var(--_pw)}[data-sileo-toast][data-ready=true] [data-sileo-header]{transition:transform var(--sileo-duration) var(--sileo-spring-easing),left var(--sileo-duration) var(--sileo-spring-easing),max-width var(--sileo-duration) var(--sileo-spring-easing)}[data-sileo-header][data-edge=top]{bottom:0}[data-sileo-header][data-edge=bottom]{top:0}[data-sileo-header-stack]{position:relative;display:inline-flex;align-items:center;height:100%}[data-sileo-header-inner]{display:flex;align-items:center;gap:.5rem;white-space:nowrap;opacity:1;filter:blur(0px);transform:translateZ(0)}[data-sileo-header-inner][data-layer=current]{position:relative;z-index:1;animation:sileo-header-enter var(--sileo-duration) var(--sileo-spring-easing) both}[data-sileo-header-inner][data-exiting=true],[data-sileo-header-inner][data-layer=current]:not(:only-child){will-change:opacity,filter}[data-sileo-header-inner][data-layer=prev]{position:absolute;left:0;top:0;z-index:0;pointer-events:none}[data-sileo-header-inner][data-exiting=true]{animation:sileo-header-exit calc(var(--sileo-duration) * .7) ease forwards}[data-sileo-badge]{display:flex;height:24px;width:24px;flex-shrink:0;align-items:center;justify-content:center;padding:2px;box-sizing:border-box;border-radius:9999px;color:var(--sileo-tone,currentColor);background-color:var(--sileo-tone-bg,transparent)}[data-sileo-title]{font-size:.825rem;line-height:1rem;font-weight:500;text-transform:capitalize;color:var(--sileo-tone,currentColor)}:is([data-sileo-badge],[data-sileo-title],[data-sileo-button])[data-state]{--_c:var(--sileo-state-success)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=loading]{--_c:var(--sileo-state-loading)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=error]{--_c:var(--sileo-state-error)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=warning]{--_c:var(--sileo-state-warning)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=info]{--_c:var(--sileo-state-info)}:is(\n[data-sileo-badge],[data-sileo-title],[data-sileo-button]\n)[data-state=action]{--_c:var(--sileo-state-action)}:is([data-sileo-badge],[data-sileo-title])[data-state]{--sileo-tone:var(--_c);--sileo-tone-bg:color-mix(in oklch, var(--_c) 20%, transparent)}[data-sileo-content]{position:absolute;left:0;z-index:10;width:100%;pointer-events:none;opacity:var(--_co, 0)}[data-sileo-content]:not([data-visible=true]){content-visibility:hidden}[data-sileo-toast][data-ready=true] [data-sileo-content]{transition:opacity calc(var(--sileo-duration) * .08) ease calc(var(--sileo-duration) * .04)}[data-sileo-content][data-edge=top]{top:0}[data-sileo-content][data-edge=bottom]{top:var(--sileo-height)}[data-sileo-content][data-visible=true]{pointer-events:auto}[data-sileo-toast][data-ready=true] [data-sileo-content][data-visible=true]{transition:opacity calc(var(--sileo-duration) * .6) ease calc(var(--sileo-duration) * .3)}[data-sileo-description]{width:100%;text-align:left;padding:1rem;font-size:.875rem;line-height:1.25rem;contain:layout style paint;content-visibility:auto}[data-sileo-button]{display:flex;align-items:center;justify-content:center;height:1.75rem;padding:0 .625rem;margin-top:.75rem;border-radius:9999px;border:0;background:0 0;font:inherit;font-size:.75rem;font-weight:500;cursor:pointer;user-select:none;color:var(--sileo-btn-color,currentColor);background-color:var(--sileo-btn-bg,transparent);transition:background-color 150ms ease}[data-sileo-button]:hover{background-color:var(--sileo-btn-bg-hover,transparent)}[data-sileo-button][data-state]{--sileo-btn-color:var(--_c);--sileo-btn-bg:color-mix(in oklch, var(--_c) 15%, transparent);--sileo-btn-bg-hover:color-mix(in oklch, var(--_c) 25%, transparent)}[data-sileo-icon=spin]{animation:sileo-spin 1s linear infinite}@keyframes sileo-spin{to{transform:rotate(360deg)}}@keyframes sileo-header-enter{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:blur(0px)}}@keyframes sileo-header-exit{from{opacity:1;filter:blur(0px)}to{opacity:0;filter:blur(6px)}}[data-sileo-viewport]{position:fixed;z-index:50;display:flex;gap:.75rem;padding:.75rem;pointer-events:none;max-width:calc(100vw - 1.5rem);contain:layout style}[data-sileo-viewport][data-position^=top] [data-sileo-toast]:not([data-ready=true]){margin-bottom:calc(-1 * (var(--sileo-height) + .75rem))}[data-sileo-viewport][data-position^=bottom] [data-sileo-toast]:not([data-ready=true]){margin-top:calc(-1 * (var(--sileo-height) + .75rem))}[data-sileo-viewport][data-position^=top]{top:0;flex-direction:column-reverse}[data-sileo-viewport][data-position^=bottom]{bottom:0;flex-direction:column}[data-sileo-viewport][data-position$=left]{left:0;align-items:flex-start}[data-sileo-viewport][data-position$=right]{right:0;align-items:flex-end}[data-sileo-viewport][data-position$=center]{left:50%;transform:translateX(-50%);align-items:center}@media (prefers-reduced-motion:no-preference){[data-sileo-toast][data-ready=true]:hover,[data-sileo-toast][data-ready=true][data-exiting=true]{will-change:transform,opacity,height}}@media (prefers-reduced-motion:reduce){[data-sileo-viewport],[data-sileo-viewport] *,[data-sileo-viewport] ::after,[data-sileo-viewport] ::before{animation-duration:0s;animation-iteration-count:1;transition-duration:0s}}[data-sileo-viewport][data-theme=dark] [data-sileo-description]{color:rgba(255,255,255,.8)}[data-sileo-viewport][data-theme=light] [data-sileo-description]{color:rgba(0,0,0,.7)}[data-sileo-close]{position:absolute;top:0;right:0;z-index:30;display:flex;align-items:center;justify-content:center;width:var(--sileo-height);height:var(--sileo-height);padding:0;border:0;background:0 0;font:inherit;cursor:pointer;pointer-events:auto;color:rgba(0,0,0,.4);opacity:0;transition:opacity 150ms ease}[data-sileo-viewport][data-theme=dark] [data-sileo-close]{color:rgba(255,255,255,.4)}[data-sileo-toast]:hover [data-sileo-close]{opacity:1}[data-sileo-close]:hover{color:rgba(0,0,0,.7)}[data-sileo-viewport][data-theme=dark] [data-sileo-close]:hover{color:rgba(255,255,255,.7)}");
 
 /* --------------------------------- Layout --------------------------------- */ const HEIGHT = 40;
 const WIDTH = 350;
@@ -36,6 +36,7 @@ const PILL_PADDING = 10;
 const MIN_EXPAND_RATIO = 2.25;
 const SWAP_COLLAPSE_MS = 200;
 const HEADER_EXIT_MS = DURATION_MS * 0.7;
+/* ---------------------------------- Limits -------------------------------- */ const DEFAULT_TOAST_LIMIT = 5;
 
 const Icon = (_0)=>{
     let { title, children } = _0, props = cc._object_without_properties_loose(_0, [
@@ -186,7 +187,7 @@ const Check = ()=>/*#__PURE__*/ jsxRuntime.jsx(Icon, {
         })
     });
 });
-/* ------------------------------- Component -------------------------------- */ const Sileo = /*#__PURE__*/ react.memo(function Sileo({ id, fill = "#FFFFFF", state = "success", title = state, description, position = "left", expand = "bottom", className, icon, styles, button, roundness, exiting = false, autoExpandDelayMs, autoCollapseDelayMs, canExpand, interruptKey, refreshKey, closeButton = false, onMouseEnter, onMouseLeave, onDismiss }) {
+/* ------------------------------- Component -------------------------------- */ const Sileo = /*#__PURE__*/ react.memo(function Sileo({ id, fill = "#FFFFFF", state = "success", title = state, description, position = "left", expand = "bottom", className, icon, styles, button, roundness, exiting = false, autoExpandDelayMs, autoCollapseDelayMs, canExpand, interruptKey, refreshKey, closeButton = false, visible = true, onMouseEnter, onMouseLeave, onDismiss }) {
     var _headerLayer_current_view_icon, _headerLayer_prev_view_icon;
     var _headerLayer_current_view_styles, _headerLayer_current_view_styles1, _headerLayer_prev_view_styles, _headerLayer_prev_view_styles1, _view_styles, _view_styles1;
     const next = react.useMemo(()=>({
@@ -592,9 +593,9 @@ const Check = ()=>/*#__PURE__*/ jsxRuntime.jsx(Icon, {
         exiting,
         onDismiss
     ]);
-    /* --------------------------------- Render --------------------------------- */ return /*#__PURE__*/ jsxRuntime.jsxs("button", {
+    /* --------------------------------- Render --------------------------------- */ return /*#__PURE__*/ jsxRuntime.jsxs("li", {
         ref: buttonRef,
-        type: "button",
+        tabIndex: 0,
         "data-sileo-toast": true,
         "data-ready": ready,
         "data-expanded": open,
@@ -602,6 +603,7 @@ const Check = ()=>/*#__PURE__*/ jsxRuntime.jsx(Icon, {
         "data-edge": expand,
         "data-position": position,
         "data-state": view.state,
+        "data-visible": visible,
         className: className,
         style: rootStyle,
         onMouseEnter: handleEnter,
@@ -697,22 +699,14 @@ const Check = ()=>/*#__PURE__*/ jsxRuntime.jsx(Icon, {
                     ]
                 })
             }),
-            closeButton && onDismiss && /*#__PURE__*/ jsxRuntime.jsx("div", {
+            closeButton && onDismiss && /*#__PURE__*/ jsxRuntime.jsx("button", {
+                type: "button",
                 "data-sileo-close": true,
-                role: "button",
-                tabIndex: 0,
                 "aria-label": "Close notification",
                 onClick: (e)=>{
                     e.preventDefault();
                     e.stopPropagation();
                     onDismiss();
-                },
-                onKeyDown: (e)=>{
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onDismiss();
-                    }
                 },
                 children: /*#__PURE__*/ jsxRuntime.jsx(X, {})
             }),
@@ -726,19 +720,12 @@ const Check = ()=>/*#__PURE__*/ jsxRuntime.jsx(Icon, {
                     className: (_view_styles = view.styles) == null ? void 0 : _view_styles.description,
                     children: [
                         view.description,
-                        view.button && /*#__PURE__*/ jsxRuntime.jsx("span", {
-                            role: "button",
-                            tabIndex: 0,
+                        view.button && /*#__PURE__*/ jsxRuntime.jsx("button", {
+                            type: "button",
                             "data-sileo-button": true,
                             "data-state": view.state,
                             className: (_view_styles1 = view.styles) == null ? void 0 : _view_styles1.button,
                             onClick: handleButtonClick,
-                            onKeyDown: (e)=>{
-                                if (e.key === "Enter" || e.key === " ") {
-                                    e.preventDefault();
-                                    handleButtonClick(e);
-                                }
-                            },
                             children: view.button.title
                         })
                     ]
@@ -755,6 +742,7 @@ const store = {
     listeners: new Set(),
     position: "top-right",
     options: undefined,
+    toastLimit: DEFAULT_TOAST_LIMIT,
     emit () {
         for (const fn of this.listeners)fn(this.toasts);
     },
@@ -816,6 +804,15 @@ const createToast = (options)=>{
                 ...p.filter((t)=>t.id !== id),
                 item
             ]);
+    }
+    // Store-level hard cap: auto-dismiss oldest when exceeding 3× toastLimit
+    const hardCap = store.toastLimit * 3;
+    const liveAfter = store.toasts.filter((t)=>!t.exiting);
+    if (liveAfter.length > hardCap) {
+        const excess = liveAfter.slice(0, liveAfter.length - hardCap);
+        for (const t of excess){
+            dismissToast(t.id);
+        }
     }
     return {
         id,
@@ -903,7 +900,7 @@ function useResolvedTheme(theme) {
     ]);
     return resolved;
 }
-function Toaster({ children, position = "top-right", offset, options, theme, closeButton = false }) {
+function Toaster({ children, position = "top-right", offset, options, theme, closeButton = false, toastLimit = DEFAULT_TOAST_LIMIT }) {
     const resolvedTheme = useResolvedTheme(theme);
     const [toasts, setToasts] = react.useState(store.toasts);
     const [activeId, setActiveId] = react.useState();
@@ -918,6 +915,7 @@ function Toaster({ children, position = "top-right", offset, options, theme, clo
     const handlersCache = react.useRef(new Map());
     react.useEffect(()=>{
         store.position = position;
+        store.toastLimit = toastLimit;
         const fill = theme ? THEME_FILLS[resolvedTheme] : undefined;
         store.options = fill ? cc._extends({}, options, {
             fill
@@ -926,7 +924,8 @@ function Toaster({ children, position = "top-right", offset, options, theme, clo
         position,
         options,
         theme,
-        resolvedTheme
+        resolvedTheme,
+        toastLimit
     ]);
     const clearAllTimers = react.useCallback(()=>{
         for (const t of timersRef.current.values())clearTimeout(t);
@@ -1096,36 +1095,53 @@ function Toaster({ children, position = "top-right", offset, options, theme, clo
             Array.from(activePositions, ([pos, items])=>{
                 const pill = pillAlign(pos);
                 const expand = expandDir(pos);
+                // Visibility split: only the first toastLimit non-exiting toasts are visible
+                let visibleCount = 0;
+                const visibilityMap = new Map();
+                for (const item of items){
+                    if (item.exiting) {
+                        visibilityMap.set(item.id, true);
+                    } else {
+                        visibleCount++;
+                        visibilityMap.set(item.id, visibleCount <= toastLimit);
+                    }
+                }
                 return /*#__PURE__*/ jsxRuntime.jsx("section", {
                     "data-sileo-viewport": true,
                     "data-position": pos,
                     "data-theme": theme ? resolvedTheme : undefined,
                     "aria-live": "polite",
                     style: getViewportStyle(pos),
-                    children: items.map((item)=>{
-                        const h = getHandlers(item.id);
-                        return /*#__PURE__*/ jsxRuntime.jsx(Sileo, {
-                            id: item.id,
-                            state: item.state,
-                            title: item.title,
-                            description: item.description,
-                            position: pill,
-                            expand: expand,
-                            icon: item.icon,
-                            fill: item.fill,
-                            styles: item.styles,
-                            button: item.button,
-                            roundness: item.roundness,
-                            exiting: item.exiting,
-                            autoExpandDelayMs: item.autoExpandDelayMs,
-                            autoCollapseDelayMs: item.autoCollapseDelayMs,
-                            refreshKey: item.instanceId,
-                            canExpand: activeId === undefined || activeId === item.id,
-                            onMouseEnter: h.enter,
-                            onMouseLeave: h.leave,
-                            onDismiss: h.dismiss,
-                            closeButton: closeButton
-                        }, item.id);
+                    children: /*#__PURE__*/ jsxRuntime.jsx("ol", {
+                        "data-sileo-list": true,
+                        children: items.map((item)=>{
+                            var _visibilityMap_get;
+                            const h = getHandlers(item.id);
+                            const visible = (_visibilityMap_get = visibilityMap.get(item.id)) != null ? _visibilityMap_get : true;
+                            return /*#__PURE__*/ jsxRuntime.jsx(Sileo, {
+                                id: item.id,
+                                state: item.state,
+                                title: item.title,
+                                description: item.description,
+                                position: pill,
+                                expand: expand,
+                                icon: item.icon,
+                                fill: item.fill,
+                                styles: item.styles,
+                                button: item.button,
+                                roundness: item.roundness,
+                                exiting: item.exiting,
+                                autoExpandDelayMs: item.autoExpandDelayMs,
+                                autoCollapseDelayMs: item.autoCollapseDelayMs,
+                                refreshKey: item.instanceId,
+                                canExpand: activeId === undefined || activeId === item.id,
+                                onMouseEnter: h.enter,
+                                onMouseLeave: h.leave,
+                                onDismiss: h.dismiss,
+                                closeButton: closeButton,
+                                visible: visible
+                            }, item.id);
+                        })
                     })
                 }, pos);
             })
